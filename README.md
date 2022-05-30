@@ -9,5 +9,6 @@ Below are some photos describing the user interface of my application, which als
 
 ## The technologies i used
 - React
+- JSX
 - HTML 
 - Sass
