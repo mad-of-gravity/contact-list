@@ -1,17 +1,55 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import * as React from 'react';
+import {createRoot} from 'react-dom/client';
+import Form from './components/Form';
+import List from './components/List';
+import './styles.scss';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {name: '', number: '', contacts: []}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+        this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleChangeNumber = this.handleChangeNumber.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+
+    handleChangeName(formName) {
+        this.setState({name: formName});
+    }
+
+
+    handleChangeNumber(formNumber) {
+        this.setState({number: formNumber});
+    }
+
+
+    handleSubmit() {
+        const newContact = {name: this.state.name, number: this.state.number};
+
+        this.setState({
+            contacts: this.state.contacts.concat(newContact),
+            name: '',
+            number: ''
+        });
+    }
+
+    render() {
+        return(
+            <div className='app-container'>
+                <Form onInputChangeName={this.handleChangeName}
+                    onInputChangeNumber={this.handleChangeNumber}  
+                    onFormSubmit={this.handleSubmit} 
+                    nameValue={this.state.name}
+                    numberValue={this.state.number}
+                />
+                <List items={this.state.contacts}/>
+            </div>
+        );
+    }
+}
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App items={["Daniel", "Adam", "Eva", "Moisey"]}/>);
